@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hbrd.Dao.CarDao">
+    <!--查询企业-->
+    <select id="IsEnterprise" resultType="com.hbrd.Model.Enterprise">
+        SELECT * FROM enterprise WHERE EnterpriseId=#{param1}
+    </select>
+
+    <!--查询车辆类型-->
+    <resultMap id="modelResultMap" type="com.hbrd.Model.Model">
+        <id property="ModelId" column="ModelId" />
+        <result property="ModelName" column="ModelName"/>
+        <association property="enterprise"
+                     javaType="com.hbrd.Model.Enterprise"
+                     select="IsEnterprise"
+                     column="EnterpriseId" />
+    </resultMap>
+    <select id="IsModel" resultMap="modelResultMap">
+        SELECT ModelId,ModelName,EnterpriseId FROM model WHERE ModelId=#{param1}
+    </select>
+    <!--查询车辆-->
+    <resultMap id="carResultMap" type="com.hbrd.Model.Car">
+        <id property="CarId" column="CarId" />
+        <result property="CarVIN" column="CarVIN"/>
+        <result property="CarLicense" column="CarLicense"/>
+        <result property="CarSIM" column="CarSIM"/>
+        <result property="CarIsOnLine" column="CarIsOnLine"/>
+        <association property="model"
+                     javaType="com.hbrd.Model.Model"
+                     select="IsModel"
+                     column="ModelId" />
+    </resultMap>
+    <select id="IsCar" resultMap="carResultMap">
+        SELECT CarId,CarVIN,CarLicense,CarSIM,CarIsOnLine,ModelId FROM car WHERE CarId=#{param1}
+    </select>
+
+    <update id="IsOnLine" parameterType="com.hbrd.Model.Car">
+        UPDATE car SET CarIsOnLine=#{param2} WHERE CarId=#{param1}
+    </update>
+
+</mapper>
