@@ -9,8 +9,5 @@
         <module name="Terminus2" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="Terminus2" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>
